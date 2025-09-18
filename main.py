@@ -1,5 +1,6 @@
 import sys
-from PyQt6 import QtWidgets
+from PyQt5 import QtWidgets
+# from PySide6.QtWidgets import QApplication, QWidget
 from colmap_ui import Ui_DialogGenMesh
 
 class DialogGenMesh(QtWidgets.QDialog):
@@ -7,35 +8,43 @@ class DialogGenMesh(QtWidgets.QDialog):
         super().__init__()
         self.ui = Ui_DialogGenMesh()
         self.ui.setupUi(self)
+        self.ui.txtPath.setReadOnly(True)
 
-        # Disconnect first (safety) then connect
-        try:
-            self.ui.btnImport.clicked.disconnect()
-        except TypeError:
-            pass  # no previous connection
-        self.ui.btnImport.clicked.connect(self.on_btnImport_clicked)
+        # Configure dsbTrimDef
+        self.ui.dsbTrimDef.setDecimals(1)
+        self.ui.dsbTrimDef.setMinimum(0.0)
+        self.ui.dsbTrimDef.setMaximum(20.0)
+        self.ui.dsbTrimDef.setValue(9.0)
 
-    def on_btnImport_clicked(self):
-        file_path, _ = QtWidgets.QFileDialog.getOpenFileName(
-            self,
-            "Select PLY file",
-            "",
-            "PLY Files (*.ply);"
-        )
-        if file_path:
-            self.ui.txtPath.setText(file_path)
+        # Configure dsbWeightDef
+        self.ui.dsbWeightDef.setDecimals(1)
+        self.ui.dsbWeightDef.setMinimum(0.0)
+        self.ui.dsbWeightDef.setMaximum(20.0)
+        self.ui.dsbWeightDef.setValue(2.0)
 
-    def on_btnGen_clicked(self):
+
+        # Configure dsbDepthDef
+        self.ui.dsbDepthDef.setDecimals(0)
+        self.ui.dsbDepthDef.setMinimum(5)
+        self.ui.dsbDepthDef.setMaximum(13)
+        self.ui.dsbDepthDef.setValue(13)
+
+
+    # def on_btnImport_clicked(self):
+    #     file_path, _ = QtWidgets.QFileDialog.getOpenFileName(
+    #         self,
+    #         "Select PLY file",
+    #         "",
+    #         "PLY Files (*.ply);"
+    #     )
+    #     if file_path:
+    #         self.ui.txtPath.setText(file_path)
+
+    def on_btnGenMesh_clicked(self):
         poissionTrimDefault = str(self.ui.dsbTrimDef.value())
-        poissionTrimMin = str(self.ui.dsbTrimMin.value())
+        poissionWeightDefault = str(self.ui.dsbWeightDef.value())
+        poissionDepthDefault = str(self.ui.dsbDepthDef.value())
 
-        # Always start with the imported path only (don’t duplicate old text)
-        file_path = self.ui.txtPath.toPlainText().splitlines()[0]  # keep only first line (the file path)
-
-        # Add values once
-        new_text = file_path + "\n" + poissionTrimDefault + ", " + poissionTrimMin
-
-        self.ui.txtPath.setText(new_text)
 
     def on_btnCancel_clicked(self):
         # Close the dialog

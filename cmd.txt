@@ -1,0 +1,4 @@
+Convert UI to PY file:
+pyuic5 -x ColmapUI.ui -o colmap_ui.py
+Run:
+python main.py
