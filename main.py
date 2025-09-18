@@ -1,5 +1,5 @@
 import sys
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 # from PySide6.QtWidgets import QApplication, QWidget
 from colmap_ui import Ui_DialogGenMesh
 
@@ -8,7 +8,16 @@ class DialogGenMesh(QtWidgets.QDialog):
         super().__init__()
         self.ui = Ui_DialogGenMesh()
         self.ui.setupUi(self)
+        # Set form title
+        self.setWindowTitle("Settings")
         self.ui.txtPath.setReadOnly(True)
+
+        # Hide minimize & maximize, keep only close
+        self.setWindowFlags(
+            QtCore.Qt.Window |
+            QtCore.Qt.WindowTitleHint |
+            QtCore.Qt.WindowCloseButtonHint
+        )
 
         # Configure dsbTrimDef
         self.ui.dsbTrimDef.setDecimals(1)

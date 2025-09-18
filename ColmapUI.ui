@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Generate Mesh</string>
+   <string>Mesh Settings</string>
   </property>
   <widget class="QTextBrowser" name="txtPath">
    <property name="enabled">
